@@ -1,8 +1,8 @@
 exports.run = async (client, message, args) => {
     await message.channel.send('Pong!').catch(console.error)
-        .then( (msg) => {
-            let ms = Math.abs(message.createdTimestamp - msg.createdTimestamp);
-            msg.edit(`Pong! ~ Took ${ms}ms`);
+        .then( (pong) => {
+            let time = pong.createdTimestamp - message.createdTimestamp;
+            pong.edit(`Pong! ~ Took ${time}ms`);
         });
 };
 
