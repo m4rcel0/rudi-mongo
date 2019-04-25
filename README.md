@@ -1,2 +1,3 @@
 # rudi-mongo
-Another discord bot, using node.js
+
+Now written on Python, using Discord.py
