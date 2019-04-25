@@ -3,3 +3,6 @@
 
 # Cache and temporary files
 _*
+
+# Token file
+token.txt
