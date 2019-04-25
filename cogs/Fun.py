@@ -1,30 +1,11 @@
 import discord
 from discord.ext import commands
 import requests
-import cowsay
-from io import StringIO
-import sys
-import textwrap
-import os
 import random
 
 class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-    # @commands.command()
-    # async def cowsay(self, ctx, *, words):
-    #     """Cowsay from GNU/Linux"""
-    #     formatted_words = textwrap.fill(words, 10)
-    #     out = StringIO()
-    #     old_stdout = sys.stdout
-    #     sys.stdout = out
-    #     cowsay.cow(formatted_words)
-    #     cowmsg = out.getvalue()
-    #     embed = discord.Embed(colour=ctx.author.color, description=f"```{cowmsg}```")
-    #     await ctx.send(embed=embed)
-    #     sys.stdout = old_stdout
-    #     print(cowmsg)
 
     @commands.command(aliases=["echo"])
     async def say(self, ctx, *, words: commands.clean_content):
