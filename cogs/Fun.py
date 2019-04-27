@@ -10,7 +10,7 @@ class Fun(commands.Cog):
     @commands.command(aliases=["echo"])
     async def say(self, ctx, *, words: commands.clean_content):
         """Makes the bot say something"""
-        await ctx.message.delete()
+        #await ctx.message.delete()
         await ctx.send(words)
 
     @commands.command(aliases=["kot"])
@@ -38,21 +38,39 @@ class Fun(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=["frog", "pepo", "kikker", "frosch", "zaba", "sapo", "лягушка", "grenouille", "béka", "Žába", "កង្កែប"])
+    @commands.command(
+        aliases=[
+            "frog",
+            "pepo",
+            "kikker",
+            "frosch",
+            "zaba",
+            "sapo",
+            "лягушка",
+            "grenouille",
+            "béka",
+            "Žába",
+            "កង្កែប",
+            "perereca",
+            "rã",
+            "forg",
+            "frogge",
+            "sapa"
+        ]
+    )
     async def pepe(self, ctx):
         """A random pepe"""
-        
-        pepes = [pepe.rstrip('\n') for pepe in open("assets/pepes.txt")]
-        chosen_pepe = random.choice(pepes)
+        await ctx.send(embed=get_pepe(ctx))
 
-        embed = discord.Embed(colour=ctx.author.color)
-        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-        embed.set_footer(text="A random pepe!  •  Maybe it's rare, idk")
-
-        embed.set_image(url=chosen_pepe)
-
-        await ctx.send(embed=embed)
-
+    
+def get_pepe(ctx):
+    pepes = [pepe.rstrip('\n') for pepe in open("assets/pepes.txt")]
+    chosen_pepe = random.choice(pepes)
+    embed = discord.Embed(colour=ctx.author.color)
+    embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+    embed.set_footer(text="A random pepe!  •  Maybe it's rare, idk")
+    embed.set_image(url=chosen_pepe)
+    return embed
 
 def setup(bot):
     bot.add_cog(Fun(bot))
