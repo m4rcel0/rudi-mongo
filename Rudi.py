@@ -3,9 +3,11 @@ from discord.ext import commands
 import random
 import asyncio
 import os
+import json
 
-bot = commands.Bot(command_prefix="!")
-TOKEN = open("token.txt", "r").read()
+CONFIG = json.load(open("config.json", "r"))
+TOKEN = CONFIG["token"]
+bot = commands.Bot(command_prefix=CONFIG["prefix"])
 
 async def chng_pr():
     await bot.wait_until_ready()
