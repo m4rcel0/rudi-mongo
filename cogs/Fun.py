@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import requests
 import random
+from TextToOwO import owo
 
 class Fun(commands.Cog):
     def __init__(self, bot):
@@ -12,6 +13,17 @@ class Fun(commands.Cog):
         """Makes the bot say something"""
         #await ctx.message.delete()
         await ctx.send(words)
+
+    @commands.command()
+    async def owo(self, ctx, *, msg: commands.clean_content = None):
+        """Converts normal text to OwO
+        
+        Usage: !owo 'text'
+        If no text is provided, it uses the previous message's contents"""
+        if not msg:
+            msg = ctx.bot._connection._messages[len(ctx.bot._connection._messages)-2].content
+        owo_msg = owo.text_to_owo(msg)
+        await ctx.send(owo_msg)
 
     @commands.command(aliases=["kot"])
     async def cat(self, ctx):
