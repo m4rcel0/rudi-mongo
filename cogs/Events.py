@@ -2,6 +2,8 @@ import discord
 from discord.ext import commands
 import random
 
+from cogs import Fun
+
 class Events(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -24,7 +26,8 @@ class Events(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             await ctx.send("You can't do that!")
         if isinstance(error, commands.CommandNotFound):
-            await ctx.send("This is not a command.")
+            #await ctx.send("This is not a command...")
+            await ctx.send("This is not a command...\nHere, have a pepe instead:", embed=Fun.get_pepe(ctx))
 
         raise error
 
