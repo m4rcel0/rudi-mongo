@@ -18,6 +18,8 @@ class Events(commands.Cog):
             return
         if message.content == "@someone":
            await message.channel.send(f"{random.choice(message.guild.members).mention}")
+        if "idk" in message.content:
+            await message.channel.send(f"{message.author.mention} doesn't know <:FeelsFunnyMan:578366776681955348>")
 
         # print(f"@{message.author} in {message.guild} #{message.channel} said:\n\t{message.content}")
 
