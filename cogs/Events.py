@@ -16,11 +16,12 @@ class Events(commands.Cog):
     async def on_message(self, message):
         if message.author.bot:
             return
+        
         if message.content == "@someone":
            await message.channel.send(f"{random.choice(message.guild.members).mention}")
 
         if Fun.doesnt_know(message.content):
-            await message.add_reaction(":FeelsFunnyMan:578366776681955348")
+            await message.add_reaction(":HeDoesntKnow:578466405649874944")
 
         # print(f"@{message.author} in {message.guild} #{message.channel} said:\n\t{message.content}")
 
