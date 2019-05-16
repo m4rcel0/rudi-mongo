@@ -85,19 +85,51 @@ def get_pepe(ctx):
     return embed
 
 def doesnt_know(message):
+
+    # TODO: 
+    # make code less ugly
+
     know_nothing = [
         "idk",
-        "dunno",
-        "i don't know",
-        "i dont know",
-        "i don't understand",
-        "i dont understand",
-        "i don't get",
-        "i dont get"
+        "dunno"
     ]
     for idk in know_nothing:
         if idk in message.lower():
             return True
+
+    negative = [
+        "no",
+        "not",
+        "dont",
+        "don't",
+        "doesnt",
+        "doesn't"
+    ]
+
+    know = [
+        "know",
+        "understand",
+        "get"
+    ]
+
+    msg = message.lower().split()
+
+    for k in know:
+        for i in range(len(msg)):
+            if k == msg[i]:
+
+                try:
+                    if msg[i+1] == "nothing":
+                        return True
+                except:
+                    pass
+
+                if i > 0:
+                    for no in negative:
+                        if msg[i-1] == no:
+                            return True
+
+
 
     return False
 
