@@ -8,13 +8,19 @@ unaware = [
     "idk",
     "dunno",
     "i don't know",
-    "i dont know"
+    "i dont know",
+    "i don't understand",
+    "i dont understand",
+    "i'm not of understandment"
 ]
 
 questions = [
     "what",
     "why",
-    "where"
+    "where",
+    "who",
+    "when",
+    "huh"
 ]
 
 class Events(commands.Cog):
@@ -36,12 +42,12 @@ class Events(commands.Cog):
             await message.add_reaction(":FeelsFunnyMan:578366776681955348")
 
         for question in questions:
-            if message.content.startswith(question):
+            if message.content.lower().startswith(question):
                 await message.add_reaction(":FeelsFunnyMan:578366776681955348")
                 break
         
         for idk in unaware:
-            if idk in message.content:
+            if idk in message.content.lower():
                 await message.add_reaction(":FeelsFunnyMan:578366776681955348")
                 break
         #if "idk" in message.content:
