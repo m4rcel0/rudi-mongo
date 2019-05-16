@@ -84,5 +84,22 @@ def get_pepe(ctx):
     embed.set_image(url=chosen_pepe)
     return embed
 
+def doesnt_know(message):
+    know_nothing = [
+        "idk",
+        "dunno",
+        "i don't know",
+        "i dont know",
+        "i don't understand",
+        "i dont understand",
+        "i don't get",
+        "i dont get"
+    ]
+    for idk in know_nothing:
+        if idk in message.lower():
+            return True
+
+    return False
+
 def setup(bot):
     bot.add_cog(Fun(bot))
