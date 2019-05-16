@@ -6,7 +6,12 @@ class Minecraft(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=["mcstatus", "server", "serverstatus"])
+    @commands.command(aliases=[
+        "players",
+        "playerlist",
+        "pl",
+        "server"
+    ])
     async def status(self, ctx):
         """Checks minecraft server status"""
 
