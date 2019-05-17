@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from mcstatus import MinecraftServer
+import asyncio
 
 class Minecraft(commands.Cog):
     def __init__(self, bot):
@@ -16,7 +17,21 @@ class Minecraft(commands.Cog):
         """Checks minecraft server status"""
 
         server = MinecraftServer("152.89.245.40", 40247)
-        status = server.status()
+
+        response = await ctx.send("Fetching server information...")
+
+        for i in range(5):
+            try:
+                status = server.status()
+                break
+            except:
+                if i == 4:
+                    await response.edit(content="Could not reach the server.")
+                    return
+                await response.edit(content="Failed to get info, trying again, attempt {}/5".format(i+2))
+            await asyncio.sleep(1)
+            
+        
         title = status.raw["description"]["text"]
         players = status.raw["players"]["sample"]
         names = [player["name"] for player in players]
@@ -30,6 +45,7 @@ class Minecraft(commands.Cog):
         embed.add_field(name=players_online, value=name_list)
         embed.set_footer(text=version)
 
+        await response.delete()
         await ctx.send(embed=embed)
     
 
