@@ -39,14 +39,13 @@ class Minecraft(commands.Cog):
         players_online = str(status.players.online) + " players online:"
         version = "Server Version: " + status.raw["version"]["name"]
         
-        embed = discord.Embed(colour=ctx.author.color, title=title)
+        embed = discord.Embed(colour=discord.Colour.green(), title=title)
         embed.set_thumbnail(url="https://i.imgur.com/aYOBOrS.png")
-        embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         embed.add_field(name=players_online, value=name_list)
         embed.set_footer(text=version)
 
-        await response.delete()
         await ctx.send(embed=embed)
+        await response.delete()
     
 
 def setup(bot):
