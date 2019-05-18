@@ -43,11 +43,12 @@ class Minecraft(commands.Cog):
             players_online = "1 player online:"
         else:
             players_online = str(status.players.online) + " players online:"
-        version = "Server Version: " + status.raw["version"]["name"]
+        version = "Version: " + status.raw["version"]["name"]
         
         embed = discord.Embed(colour=discord.Colour.green(), title=title)
         embed.set_thumbnail(url="https://i.imgur.com/aYOBOrS.png")
         embed.add_field(name=players_online, value=names)
+        embed.add_field(name="Latency:", value=str(status.latency) + "ms", inline=False)
         embed.set_footer(text=version)
 
         await ctx.send(embed=embed)
