@@ -33,15 +33,21 @@ class Minecraft(commands.Cog):
             
         
         title = status.raw["description"]["text"]
-        players = status.raw["players"]["sample"]
-        names = [player["name"] for player in players]
-        name_list = "\n".join(names)
-        players_online = str(status.players.online) + " players online:"
+        try:
+            players = status.raw["players"]["sample"]
+            names = "\n".join([player["name"] for player in players])
+            #name_list = "\n".join(names)
+        except:
+            names = "Nobody is playing"
+        if status.players.online == 1:
+            players_online = "1 player online:"
+        else:
+            players_online = str(status.players.online) + " players online:"
         version = "Server Version: " + status.raw["version"]["name"]
         
         embed = discord.Embed(colour=discord.Colour.green(), title=title)
         embed.set_thumbnail(url="https://i.imgur.com/aYOBOrS.png")
-        embed.add_field(name=players_online, value=name_list)
+        embed.add_field(name=players_online, value=names)
         embed.set_footer(text=version)
 
         await ctx.send(embed=embed)
