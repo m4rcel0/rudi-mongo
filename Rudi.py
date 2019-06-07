@@ -11,25 +11,40 @@ bot = commands.Bot(command_prefix=CONFIG["prefix"])
 
 async def chng_pr():
     await bot.wait_until_ready()
-    statuses = [
-        "!help",
-        "with mongs",
+    game_status = [
         "!pepe",
-        "with nsfw api's",
         "with my pp",
-        "mong playlist @spotify",
-        "REEEEEEEEEEEEEEEEEEEEEE",
         "innocent",
         "with your feelings",
         "Grand Dead Game V",
         "Forza can't connect 4",
-        "@someone",
-        "the waiting game while you don't give Cow more ideas for commands :pepega:"
+        "IRON MINING SIMULATOR"
     ]
 
+    listen_status = [
+        "mong playlist @spotify",
+        "10 Hours of Soft Loli Breathing"
+    ]
+
+    watch_status = [
+        "ayymd memes",
+        "dead chat",
+        "you do @someone in chat",
+        "your lack of critical information",
+        "the great mongolian empire rise again"
+    ]
+
+    statuses = {
+        0 : game_status,
+        2 : listen_status,
+        3 : watch_status
+    }
+
+
     while not bot.is_closed():
-        status = random.choice(statuses)
-        await bot.change_presence(activity=discord.Game(status))
+        status_type = random.choice([0,2,3])
+        status = random.choice(statuses[status_type])
+        await bot.change_presence(activity=discord.Activity(name=status, type=status_type))
         await asyncio.sleep(60)
 
 for cog in os.listdir("./cogs"):
