@@ -71,7 +71,7 @@ class Fun(commands.Cog):
         ]
     )
     async def pepe(self, ctx):
-        """A random pepe (CURRENTLY UNFILTERED, MIGHT BE NSFW)"""
+        """A random pepe"""
         await ctx.send(embed=get_pepe(ctx))
 
     
