@@ -86,52 +86,27 @@ def get_pepe(ctx):
 
 def doesnt_know(message):
 
-    # TODO: 
-    # make code less ugly
+    for word in message.split():
+        if word == "idk": return True
+        if word == "dunno": return True
 
-    know_nothing = [
-        "idk",
-        "dunno"
-    ]
-    for idk in know_nothing:
-        if idk in message.lower():
-            return True
-
-    negative = [
-        "no",
-        "not",
-        "dont",
-        "don't",
-        "doesnt",
-        "doesn't"
-    ]
-
-    know = [
-        "know",
-        "understand",
-        "get"
+    lack_of_knowledge = [
+        "i don't know",
+        "i dont know",
+        "i do not know",
+        "i lack critical information",
+        "i don't understand",
+        "i dont understand",
+        "i do not understand",
+        "i don't get",
+        "i dont get",
+        "i do not get",
+        "i'm not of understandment",
+        "i am not of understandment"
     ]
 
-    msg = message.lower().split()
+    return any(idk in message for idk in lack_of_knowledge)
 
-    for k in know:
-        for i in range(len(msg)):
-            if k == msg[i]:
-
-                try:
-                    if msg[i+1] == "nothing":
-                        return True
-                except:
-                    pass
-
-                if i > 0:
-                    for no in negative:
-                        if msg[i-1] == no:
-                            return True
-
-
-
-    return False
 
 def setup(bot):
     bot.add_cog(Fun(bot))

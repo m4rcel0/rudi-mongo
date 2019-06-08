@@ -20,7 +20,7 @@ class Events(commands.Cog):
         if message.content == "@someone":
            await message.channel.send(f"{random.choice(message.guild.members).mention}")
 
-        if Fun.doesnt_know(message.content):
+        if Fun.doesnt_know(message.content.lower()):
             await message.add_reaction(":HeDoesntKnow:578466405649874944")
 
         # print(f"@{message.author} in {message.guild} #{message.channel} said:\n\t{message.content}")
