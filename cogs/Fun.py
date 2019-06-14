@@ -3,6 +3,7 @@ from discord.ext import commands
 import requests
 import random
 from TextToOwO import owo
+import re
 
 class Fun(commands.Cog):
     def __init__(self, bot):
@@ -86,26 +87,10 @@ def get_pepe(ctx):
 
 def doesnt_know(message):
 
-    for word in message.split():
-        if word == "idk": return True
-        if word == "dunno": return True
-
-    lack_of_knowledge = [
-        "i don't know",
-        "i dont know",
-        "i do not know",
-        "i lack critical information",
-        "i don't understand",
-        "i dont understand",
-        "i do not understand",
-        "i don't get",
-        "i dont get",
-        "i do not get",
-        "i'm not of understandment",
-        "i am not of understandment"
-    ]
-
-    return any(idk in message for idk in lack_of_knowledge)
+    idk = re.search(r'\b(idk|dunno)|(i\s(dont|do\snot|don\'t)\s(know|understand|get))|(i\slack\scritical\sinformation)|(i(\'m)|(\sam)\snot\sof\sunderstandment)\b', message)
+    if idk: return True
+    
+    return False
 
 
 def setup(bot):
