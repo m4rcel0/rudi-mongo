@@ -87,7 +87,7 @@ def get_pepe(ctx):
 
 def doesnt_know(message):
 
-    idk = re.search(r'\b(idk|dunno)|(i\s(dont|do\snot|don\'t)\s(know|understand|get))|(i\slack\scritical\sinformation)|(i(\'m)|(\sam)\snot\sof\sunderstandment)\b', message)
+    idk = re.search(r'\b(idk|dunno)|(i\s(dont|do\snot|don\'t)\s(know|understand|get))|(i\slack\scritical\sinformation)|(i((\'m)|(\sam))\snot\sof\sunderstandment)\b', message)
     if idk: return True
     
     return False
