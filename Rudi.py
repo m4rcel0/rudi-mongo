@@ -18,7 +18,8 @@ async def chng_pr():
         "with your feelings",
         "Grand Dead Game V",
         "Forza can't connect 4",
-        "IRON MINING SIMULATOR"
+        "IRON MINING SIMULATOR",
+        "the feet whiffing game"
     ]
 
     listen_status = [
