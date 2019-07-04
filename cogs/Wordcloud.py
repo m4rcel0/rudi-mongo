@@ -3,12 +3,19 @@ from discord.ext import commands
 from wordcloud import WordCloud
 import random
 import os
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 
-def make_cloud(text, font, hues):
+async def cloud_making(func, text, font, hues, res):
+    executor = ThreadPoolExecutor(10)
+    loop = asyncio.get_event_loop()
+    await loop.run_in_executor(executor, func, text, font, hues, res)
+
+def make_cloud(text, font, hues, res):
     global currenthues
     currenthues = hues
     words = clean_words(text)
-    wordcloud = WordCloud(font_path=get_random_font(font), background_color=bgc, mode='RGBA', width=640, height=360, scale=1, color_func=generate_color)
+    wordcloud = WordCloud(font_path=get_random_font(font), background_color=bgc, mode='RGBA', width=res[0], height=res[1], scale=1, color_func=generate_color)
     wordcloud.generate(' '.join(words))
     wordcloud.to_file('wordcloud.png')
 
@@ -35,6 +42,14 @@ def to_words(text):
     return text.lower().split()
 
 
+resolutions = {
+    'default' : [640, 360],
+    '720p' : [1280, 720],
+    '1080p' : [1920, 1080],
+    '4k' : [4096, 2160]
+}
+
+
 class Wordcloud(commands.Cog):
     
     def __init__(self, bot):
@@ -42,19 +57,33 @@ class Wordcloud(commands.Cog):
 
     @commands.command(aliases=['wc', 'cloud'])
     async def wordcloud(self, ctx, *args):
+        """Creates a wordcloud from 1000 previous messages in the channel
+
+        Usage: !wordcloud [color] [font] [resolution] [transparent]
+        
+        Arguments are optional, and the order does not matter
+
+        Colors: red, orange, yellow, green, blue, purple (can use more than one)
+        Fonts: clean, fancy, handwriting
+        Resolution: 720p, 1080p, 4k
+        Transparent background: transparent
+
+        Example: !wordcloud yellow blue clean 1080p
+        """
         font = ''
         hues = []
         global bgc
         bgc = 'black'
-        # global mode = 'RGB'
+        res = resolutions['default']
         for arg in args:
             if is_color(arg):
                 hues.append(from_name(arg).hue)
             elif arg in os.listdir('assets/fonts/'):
                 font = arg
+            elif arg in resolutions:
+                res = resolutions[arg]
             elif arg == 'transparent':
                 bgc=None
-                # mode='RGBA'
 
 
         if not font:
@@ -72,7 +101,9 @@ class Wordcloud(commands.Cog):
         
         await status.edit(content="Creating cloud...")
         
-        make_cloud(generatefrom, font, hues)
+        #make_cloud(generatefrom, font, hues, res)
+
+        await cloud_making(make_cloud, generatefrom, font, hues, res)
 
         await message.channel.send(file=discord.File('wordcloud.png'))
         
