@@ -5,6 +5,7 @@ import random
 import os
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
+import re
 
 async def cloud_making(func, text, font, hues, res):
     executor = ThreadPoolExecutor(10)
@@ -27,19 +28,12 @@ def generate_color(word=None, font_size=None, position=None, orientation=None, f
 def get_random_font(category):
     return 'assets/fonts/' + category + '/' + random.choice(os.listdir('assets/fonts/' + category))
 
-boringwords = ['the', 'a', 'an', 'of']
 
 def clean_words(text):
-    clean = to_words(text)
-    for boring in boringwords:
-        clean[:] = [word for word in clean if word != boring]
-        clean = [x for x in clean if ':' not in x]
-        clean = [x for x in clean if '@' not in x]
+    text = text.lower()
+    #clean = re.sub(r'[!*&|]\w*', '', clean)
+    clean = re.findall(r'\w+', re.sub(r'[.!@#$%¨&*-=+;:/|\\]\w*', '', text))
     return clean
-
-
-def to_words(text):
-    return text.lower().split()
 
 
 resolutions = {
@@ -59,7 +53,7 @@ class Wordcloud(commands.Cog):
     async def wordcloud(self, ctx, *args):
         """Creates a wordcloud from 1000 previous messages in the channel
 
-        Usage: !wordcloud [color] [font] [resolution] [transparent]
+        Usage: !wordcloud [color] [font] [resolution] [transparent] [amount_of_messages]
         
         Arguments are optional, and the order does not matter
 
@@ -67,23 +61,30 @@ class Wordcloud(commands.Cog):
         Fonts: clean, fancy, handwriting
         Resolution: 720p, 1080p, 4k
         Transparent background: transparent
+        Amount of messages: amount='number'
 
-        Example: !wordcloud yellow blue clean 1080p
+        Example: !wordcloud yellow blue clean 1080p messages=100
         """
         font = ''
         hues = []
         global bgc
         bgc = 'black'
-        res = resolutions['default']
+        res = resolutions['720p']
+
+        amount = 1000
+
+        
         for arg in args:
-            if is_color(arg):
+            if arg.startswith('messages='):
+                amount = int(arg.lstrip('messages='))
+            elif is_color(arg):
                 hues.append(from_name(arg).hue)
             elif arg in os.listdir('assets/fonts/'):
                 font = arg
             elif arg in resolutions:
                 res = resolutions[arg]
             elif arg == 'transparent':
-                bgc=None
+                bgc=None        
 
 
         if not font:
@@ -92,20 +93,22 @@ class Wordcloud(commands.Cog):
         if len(hues) < 1:
             hues.append(random.choice(allColors).hue)
 
-        status = await ctx.send("Reading messages...")
+        status = await ctx.send(f"Reading {amount} messages...")
 
         generatefrom = ''
-        async for message in ctx.channel.history(limit=1000):
-            if not message.author.bot:
-                generatefrom = (generatefrom + ' ' + message.content)
         
-        await status.edit(content="Creating cloud...")
+        try:
+            async for message in ctx.channel.history(limit=amount):
+                if not message.author.bot:
+                    generatefrom = (generatefrom + ' ' + message.content)
+            
+            await status.edit(content=f"Creating cloud in {res[0]}x{res[1]}... (may take a while)")
+
+            await cloud_making(make_cloud, generatefrom, font, hues, res)
+            await ctx.send(file=discord.File('wordcloud.png'))
+        except: 
+            await ctx.send("❌ Could not create wordcloud ❌\nContact the owner maybe, idk <:peeposhrug:596749393575804937>")
         
-        #make_cloud(generatefrom, font, hues, res)
-
-        await cloud_making(make_cloud, generatefrom, font, hues, res)
-
-        await message.channel.send(file=discord.File('wordcloud.png'))
         
         await status.delete()
 
