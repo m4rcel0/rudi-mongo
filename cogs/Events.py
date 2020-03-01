@@ -21,7 +21,10 @@ class Events(commands.Cog):
            await message.channel.send(f"{random.choice(message.guild.members).mention}")
 
         if Fun.doesnt_know(message.content.lower()):
-            await message.add_reaction(":HeDoesntKnow:578466405649874944")
+           await message.add_reaction(":HeDoesntKnow:578466405649874944")
+
+        if Fun.react_dogehouse(message):
+            await message.add_reaction(":pempocute:682304790948085887")
 
         # print(f"@{message.author} in {message.guild} #{message.channel} said:\n\t{message.content}")
 
