@@ -16,7 +16,7 @@ class Minecraft(commands.Cog):
     async def status(self, ctx):
         """Checks minecraft server status"""
 
-        server = MinecraftServer("152.89.245.40", 40247)
+        server = MinecraftServer("51.89.244.124", 25609)
 
         response = await ctx.send("Fetching server information...")
 
