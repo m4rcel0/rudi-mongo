@@ -10,9 +10,13 @@ class Fun(commands.Cog):
         self.bot = bot
 
     @commands.command(aliases=["echo"])
+    @commands.is_owner()
     async def say(self, ctx, *, words: commands.clean_content):
         """Makes the bot say something"""
-        #await ctx.message.delete()
+        try:
+            await ctx.message.delete()
+        except:
+            pass
         await ctx.send(words)
 
     @commands.command()
