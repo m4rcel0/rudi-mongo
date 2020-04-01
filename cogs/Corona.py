@@ -16,7 +16,7 @@ class Corona(commands.Cog):
         "coronavirus"
         "covid19"
     ])
-    async def corona(self, ctx, target_country = None):
+    async def corona(self, ctx, *, target_country = None):
         """Fetches and displays Corona Virus current cases from the world"""
 
         try:
