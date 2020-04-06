@@ -43,7 +43,7 @@ class Corona(commands.Cog):
             deaths_total = "{:,}".format(corona_stats['deaths'])
             deaths_new = "{:,}".format(corona_stats['todayDeaths'])
             recovered = "{:,}".format(corona_stats['recovered'])
-            updated = datetime.utcfromtimestamp(corona_stats['updated']/1000).strftime('%H:%M %A %d-%m-%Y')
+            updated = datetime.utcfromtimestamp(corona_stats['updated']/1000).strftime('%H:%M(GMT) %A %d-%m-%Y')
         except:
             await ctx.send("Country not found, maybe it has no cases, or you need to type better idk <:peeposhrug:596749393575804937>")
             return
