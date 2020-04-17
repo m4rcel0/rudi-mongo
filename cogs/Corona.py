@@ -13,17 +13,21 @@ class Corona(commands.Cog):
     @commands.command(aliases=[
         "coronga",
         "covid",
-        "coronavirus"
+        "coronavirus",
         "covid19"
     ])
     async def corona(self, ctx, *, target_country = None):
-        """Fetches and displays Corona Virus current cases from the world"""
+        """Display COVID19 data from countries or the world
+            Usage:
+            !corona
+            !corona country
+        """
 
         if not target_country:
             country_flag = "https://cdn.discordapp.com/attachments/587051836050112512/696495396628988014/W31X.gif"
-            url = "http://corona.lmao.ninja/all"
+            url = "http://corona.lmao.ninja/v2/all?yesterday=false"
         else:
-            url = "http://corona.lmao.ninja/countries/" + target_country.lower()
+            url = "http://corona.lmao.ninja/v2/countries/" + target_country.lower() + "?yesterday=false&strict=false"
             country_flag = None
 
         try:
@@ -43,7 +47,7 @@ class Corona(commands.Cog):
             deaths_total = "{:,}".format(corona_stats['deaths'])
             deaths_new = "{:,}".format(corona_stats['todayDeaths'])
             recovered = "{:,}".format(corona_stats['recovered'])
-            updated = datetime.utcfromtimestamp(corona_stats['updated']/1000).strftime('%H:%M(GMT) %A %d-%m-%Y')
+            updated = datetime.utcfromtimestamp(corona_stats['updated']/1000).strftime('%H:%M(UTC) %A %d-%m-%Y')
         except:
             await ctx.send("Country not found, maybe it has no cases, or you need to type better idk <:peeposhrug:596749393575804937>")
             return
