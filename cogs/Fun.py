@@ -98,7 +98,7 @@ def doesnt_know(message):
 
 def react_dogehouse(message):
 
-    if message.guild.id == 575312937611427860:
+    if message.guild.id == 575312937611427860 and message.author.id == 313290158969454593:
         return True
 
     return False
