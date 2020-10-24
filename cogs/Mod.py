@@ -17,6 +17,17 @@ class Mod(commands.Cog):
             print(f"{cog} cannot be loaded:")
             raise e
 
+    @commands.command(aliases=[
+        "die",
+        "begone",
+        "fuckoff"
+    ])
+    @commands.is_owner()
+    async def logout(self, ctx):
+        await ctx.send("<:really:697676884510507018>")
+        await ctx.send("ok bi")
+        await self.bot.logout()
+
     # @commands.command()
     # @commands.has_permissions(kick_members=True)
     # async def kick(self, ctx, member: discord.Member, *, reason=""):
