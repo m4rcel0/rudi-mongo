@@ -9,14 +9,24 @@ class Minecraft(commands.Cog):
 
     @commands.command(aliases=[
         "players",
-        "playerlist",
         "pl",
-        "server"
+        "server",
+        "mc",
+        "minecraft"
     ])
-    async def status(self, ctx):
-        """Checks minecraft server status"""
+    async def playerlist(self, ctx, server_ip = None):
+        """Checks minecraft server status
+        
+        Usage: !mc ip:port
+        If no ip:port is provided, uses default mong server
+        """
 
-        server = MinecraftServer("51.89.244.124", 25609)
+        #server = MinecraftServer("51.89.244.124", 25609)
+
+        server_ip = "54.36.167.92:25598" if not server_ip else server_ip
+        server_ip, port = server_ip.split(":")
+        
+        server = MinecraftServer(server_ip, int(port))
 
         response = await ctx.send("Fetching server information...")
 
