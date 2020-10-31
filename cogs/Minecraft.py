@@ -17,14 +17,19 @@ class Minecraft(commands.Cog):
     async def playerlist(self, ctx, server_ip = None):
         """Checks minecraft server status
         
-        Usage: !mc ip:port
-        If no ip:port is provided, uses default mong server
+        Usage examples:
+        
+        !playerlist "ip"
+        !playerlist "ip:port"
+        
+        If no argument is provided, uses default minecraft server (set by bot owner)
         """
 
-        #server = MinecraftServer("51.89.244.124", 25609)
-
         server_ip = "54.36.167.92:25598" if not server_ip else server_ip
-        server_ip, port = server_ip.split(":")
+        if ":" in server_ip:
+            server_ip, port = server_ip.split(":")
+        else:
+            port = 25565 #default minecraft port
         
         server = MinecraftServer(server_ip, int(port))
 
