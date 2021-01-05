@@ -72,7 +72,8 @@ class Fun(commands.Cog):
             "rã",
             "forg",
             "frogge",
-            "sapa"
+            "sapa",
+            "kurbağa"
         ]
     )
     async def pepe(self, ctx):
