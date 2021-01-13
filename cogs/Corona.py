@@ -12,90 +12,69 @@ class Corona(commands.Cog):
    
 
     @commands.command(aliases=[
-        "coronga",
+        "c",
         "covid",
         "coronavirus",
         "covid19"
     ])
     async def corona(self, ctx, *, target_country = None):
-        """Display COVID19 data from countries or the world
+        """Display COVID-19 data from countries or the world
             Usage:
-            !corona
-            !corona country
+            !c
+            !c br
+            !c brazil
         """
 
         if not target_country:
+            url_td = "https://disease.sh/v3/covid-19/all"
+            url_yt = "https://disease.sh/v3/covid-19/all?yesterday=true"
+            url_2d = "https://disease.sh/v3/covid-19/all?twoDaysAgo=true"
             country_flag = "https://cdn.discordapp.com/attachments/587051836050112512/696495396628988014/W31X.gif"
-            url_td = "http://corona.lmao.ninja/v2/all?yesterday=false"
-            url_yt = "http://corona.lmao.ninja/v2/all?yesterday=true"
         else:
-            url_td = "http://corona.lmao.ninja/v2/countries/" + target_country.lower() + "?yesterday=false&strict=false"
-            url_yt = "http://corona.lmao.ninja/v2/countries/" + target_country.lower() + "?yesterday=true&strict=false"
+            url_td = "https://disease.sh/v3/covid-19/countries/" + target_country.lower()
+            url_yt = "https://disease.sh/v3/covid-19/countries/" + target_country.lower() + "?yesterday=true"
+            url_2d = "https://disease.sh/v3/covid-19/countries/" + target_country.lower() + "?twoDaysAgo=true"
             country_flag = None
-
-        try:
-            d_td = requests.get(url_td)
-            d_yt = requests.get(url_yt)
             
-            stats_td = d_td.json()
-            stats_yt = d_yt.json()
-
+        try:
+            data_today = requests.get(url_td).json()
+            data_yesterday = requests.get(url_yt).json()
+            data_twoDaysAgo = requests.get(url_2d).json()
+            country_flag = country_flag if country_flag else data_today['countryInfo']['flag']
         except:
             ctx.send("Unable to get information right now. Try again later or contact Cow... idk")
             return
-
-
+        
         try:
-            if not country_flag:
-                country_flag = stats_td['countryInfo']['flag']
-
-            td_cases_total = "{:,}".format(stats_td['cases'])
-            td_cases_new = "{:,}".format(stats_td['todayCases'])
-            td_cases_active = "{:,}".format(stats_td['active'])
-            td_deaths_total = "{:,}".format(stats_td['deaths'])
-            td_deaths_new = "{:,}".format(stats_td['todayDeaths'])
-            td_recovered = "{:,}".format(stats_td['recovered'])
-
-            yt_cases_total = "{:,}".format(stats_yt['cases'])
-            yt_cases_new = "{:,}".format(stats_yt['todayCases'])
-            yt_cases_active = "{:,}".format(stats_yt['active'])
-            yt_deaths_total = "{:,}".format(stats_yt['deaths'])
-            yt_deaths_new = "{:,}".format(stats_yt['todayDeaths'])
-            yt_recovered = "{:,}".format(stats_yt['recovered'])
-            
-            updated = datetime.utcfromtimestamp(stats_td['updated']/1000).strftime('%H:%M(UTC) %A %d-%m-%Y')
-        except:
-            await ctx.send("Country not found, maybe it has no cases, or you need to type better idk <:peeposhrug:596749393575804937>")
-            return
-
-        try:
-            title = stats_td['country']
+            title = data_today['country']
         except:
             title = "World"
+            
+        time = int((datetime.utcnow() - datetime.utcfromtimestamp(data_today['updated']/1000)).total_seconds()/60)
 
-        embed = discord.Embed(colour=discord.Colour.purple(), title=title + " Coronavirus Status", url="https://www.worldometers.info/coronavirus/")
+        def create_embed(data, flag, title, day, time):
+            embed = discord.Embed(
+                colour=discord.Colour.purple(),
+                title=title + " Covid-19 " + day,
+                url="https://www.worldometers.info/coronavirus/")
+            embed.set_thumbnail(url=flag)
+            if time < 1:
+                embed.set_footer(text="Updated less than a min. ago")
+            else:
+                embed.set_footer(text="Updated " + str(time) + "min ago")
+            
+            embed.add_field(name="<:totalcases:696506315131846717> Total", value="{:,}".format(data['cases']))
+            embed.add_field(name="<:casesarrow:696516134962462771> New Cases", value="{:,}".format(data['todayCases']))
+            embed.add_field(name="<a:coronacases:696408215675732078> Active", value="{:,}".format(data['active']))
+            embed.add_field(name="<:coronadeaths:696408166988120124> Deaths", value="{:,}".format(data['deaths']))
+            embed.add_field(name="<:deathsarrow:696493553697947690> New Deaths", value="{:,}".format(data['todayDeaths']))
+            embed.add_field(name="<:coronarecovered:696408101078827049> Recovered", value="{:,}".format(data['recovered']))
+            
+            return embed
         
-        embed.set_thumbnail(url=country_flag)
-        embed.set_footer(text="Last updated: " + updated)
-
-        embed.add_field(name="TODAY", value="---------------" , inline=False)
-        embed.add_field(name="<:totalcases:696506315131846717> Total", value=td_cases_total)
-        embed.add_field(name="<:casesarrow:696516134962462771> New Cases", value=td_cases_new)
-        embed.add_field(name="<a:coronacases:696408215675732078> Active", value=td_cases_active)
-        embed.add_field(name="<:coronadeaths:696408166988120124> Deaths", value=td_deaths_total)
-        embed.add_field(name="<:deathsarrow:696493553697947690> New Deaths", value=td_deaths_new)
-        embed.add_field(name="<:coronarecovered:696408101078827049> Recovered", value=td_recovered)
-        
-        embed.add_field(name="YESTERDAY", value="---------------", inline=False)
-        embed.add_field(name="<:totalcases:696506315131846717> Total", value=yt_cases_total)
-        embed.add_field(name="<:casesarrow:696516134962462771> New Cases", value=yt_cases_new)
-        embed.add_field(name="<a:coronacases:696408215675732078> Active", value=yt_cases_active)
-        embed.add_field(name="<:coronadeaths:696408166988120124> Deaths", value=yt_deaths_total)
-        embed.add_field(name="<:deathsarrow:696493553697947690> New Deaths", value=yt_deaths_new)
-        embed.add_field(name="<:coronarecovered:696408101078827049> Recovered", value=yt_recovered) 
-
-
-        await ctx.send(embed=embed) 
+        await ctx.send(embed=create_embed(data_today, country_flag, title, "today", time))
+        await ctx.send(embed=create_embed(data_yesterday, country_flag, title, "yesterday", time))
+        await ctx.send(embed=create_embed(data_twoDaysAgo, country_flag, title, "two days ago", time))
 
 
 def setup(bot):
