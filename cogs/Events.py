@@ -17,7 +17,7 @@ class Events(commands.Cog):
         if message.author.bot:
             return
         
-        if message.content == "@someone":
+        if "@someone" in message.content:
             guild_members = message.guild.members
             while True:
                 someone = random.choice(guild_members)
