@@ -18,7 +18,12 @@ class Events(commands.Cog):
             return
         
         if message.content == "@someone":
-           await message.channel.send(f"{random.choice(message.guild.members).mention}")
+            guild_members = message.guild.members
+            while True:
+                someone = random.choice(guild_members)
+                if not someone.bot:
+                    await message.channel.send(f"{someone.mention}")
+                    break
 
         if Fun.doesnt_know(message.content.lower()):
            await message.add_reaction(":HeDoesntKnow:578466405649874944")

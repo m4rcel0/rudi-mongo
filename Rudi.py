@@ -5,9 +5,12 @@ import asyncio
 import os
 import json
 
+intents = discord.Intents.default()
+intents.members = True
+
 CONFIG = json.load(open("config.json", "r"))
 TOKEN = CONFIG["token"]
-bot = commands.Bot(command_prefix=CONFIG["prefix"])
+bot = commands.Bot(command_prefix=CONFIG["prefix"], intents=intents)
 
 async def chng_pr():
     await bot.wait_until_ready()
