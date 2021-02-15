@@ -25,7 +25,7 @@ class Minecraft(commands.Cog):
         If no argument is provided, uses default minecraft server (set by bot owner)
         """
 
-        server_ip = "54.36.167.92:25598" if not server_ip else server_ip
+        server_ip = "51.38.84.69:25595" if not server_ip else server_ip
         if ":" in server_ip:
             server_ip, port = server_ip.split(":")
         else:
