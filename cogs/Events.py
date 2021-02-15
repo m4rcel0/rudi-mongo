@@ -28,11 +28,6 @@ class Events(commands.Cog):
         if Fun.doesnt_know(message.content.lower()):
            await message.add_reaction(":HeDoesntKnow:578466405649874944")
 
-        if Fun.react_dogehouse(message):
-            await message.add_reaction(":pempocute:682304790948085887")
-
-        # print(f"@{message.author} in {message.guild} #{message.channel} said:\n\t{message.content}")
-
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):

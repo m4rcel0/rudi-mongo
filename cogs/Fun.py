@@ -98,12 +98,5 @@ def doesnt_know(message):
     
     return False
 
-def react_dogehouse(message):
-
-    if message.guild.id == 575312937611427860 and message.author.id == 313290158969454593:
-        return True
-
-    return False
-
 def setup(bot):
     bot.add_cog(Fun(bot))
