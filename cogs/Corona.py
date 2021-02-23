@@ -9,6 +9,8 @@ from datetime import datetime
 from millify import millify
 from millify import prettify
 
+from dpymenus import Page, PaginatedMenu
+
 class Corona(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -100,9 +102,18 @@ class Corona(commands.Cog):
             percentage = int(cases)/int(population)*100
             return percentage
         
-        await ctx.send(embed=create_embed(data_today, country_flag, title, "today", time))
-        await ctx.send(embed=create_embed(data_yesterday, country_flag, title, "yesterday", time))
-        await ctx.send(embed=create_embed(data_twoDaysAgo, country_flag, title, "two days ago", time))
+        embed_today = create_embed(data_today, country_flag, title, "today", time)
+        embed_yesterday = create_embed(data_yesterday, country_flag, title, "yesterday", time)
+        embed_ereyesterday = create_embed(data_twoDaysAgo, country_flag, title, "two days ago", time)
+        
+        menu = PaginatedMenu(ctx)
+        menu.add_pages([embed_today, embed_yesterday, embed_ereyesterday])
+        menu.set_timeout(60)
+        menu.show_command_message()
+        menu.hide_cancel_button()
+        menu.allow_multisession()
+        menu.set_timeout_page(embed_today)
+        await menu.open()
 
 
 def setup(bot):
