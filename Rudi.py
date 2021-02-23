@@ -16,13 +16,16 @@ async def chng_pr():
     await bot.wait_until_ready()
     game_status = [
         "!pepe",
-        "with my pp",
+        "!corona",
+        "!covid",
         "innocent",
         "with your feelings",
         "Grand Dead Game V",
-        "Forza can't connect 4",
         "IRON MINING SIMULATOR",
-        "the feet whiffing game"
+        "Valheim",
+        "amogus",
+        "boring horse game",
+        
     ]
 
     listen_status = [
@@ -35,7 +38,10 @@ async def chng_pr():
         "dead chat",
         "you do @someone in chat",
         "your lack of critical information",
-        "the great mongolian empire rise again"
+        "the great mongolian empire rise again",
+        "cow do thing",
+        "doggo identity theft",
+        "penguin doing a pepo"
     ]
 
     statuses = {
